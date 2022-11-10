@@ -2,14 +2,21 @@
 
 {% block content %}
     <div>
-        <p>Sign In</p>
-        <form action="{{ url_for('login') }}" method='POST' novalidate>
+        <p>Sign Up</p>
+        <form action="{{ url_for('signup') }}" method='POST' novalidate>
             {{ form.hidden_tag() }}
             <p>
                 {{ form.username.label }}<br>
                 {{ form.username(size=35) }}<br>
                 {% for err in form.username.errors %}
                     <span style="color:red">{{ err }}</span>
+                {% endfor %}
+            </p>
+            <p>
+                {{ form.email.label }}<br>
+                {{ form.email(size=35) }}<br>
+                {% for err in form.email.errors %}
+                <span style="color:red">{{ err }}</span>
                 {% endfor %}
             </p>
             <p>
@@ -20,8 +27,11 @@
                 {% endfor %}
             </p>
             <p>
-                {{ form.remember_me }}
-                {{ form.remember_me.label }}
+                {{ form.check_password.label }}<br>
+                {{ form.check_password(size=35) }}<br>
+                {% for err in form.check_password.errors %}
+                <span style="color:red">{{ err }}</span>
+                {% endfor %}
             </p>
             <p>
             {{ form.submit }}
@@ -29,3 +39,4 @@
         </form>
     </div>
 {% endblock %}
+

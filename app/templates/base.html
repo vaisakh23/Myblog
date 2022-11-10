@@ -12,6 +12,7 @@
     Microblog:
     <a href="{{ url_for('index') }}">Home</a>
     <a href="{{ url_for('login') }}">Login</a>
+    <a href="{{ url_for('signup') }}">Signup</a>
   </div>
   {% with messages = get_flashed_messages() %}
     {% if messages %}
