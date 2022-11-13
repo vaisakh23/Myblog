@@ -2,14 +2,14 @@
 
 {% block content %}
     <div>
-        <p>Sign Up</p>
-        <form action="{{ url_for('signup') }}" method='POST' novalidate>
+        <p>Edit Profile</p>
+        <form action="" method='POST' enctype="multipart/form-data", novalidate>
             {{ form.hidden_tag() }}
             <p>
                 {{ form.username.label }}<br>
                 {{ form.username(size=35) }}<br>
                 {% for err in form.username.errors %}
-                    <span style="color:red">{{ err }}</span>
+                <span style="color:red">{{ err }}</span>
                 {% endfor %}
             </p>
             <p>
@@ -20,16 +20,16 @@
                 {% endfor %}
             </p>
             <p>
-                {{ form.password.label }}<br>
-                {{ form.password(size=35) }}<br>
-                {% for err in form.password.errors %}
-                    <span style="color:red">{{ err }}</span>
+                {{ form.about_me.label }}<br>
+                {{ form.about_me(cols=50, rows=4) }}<br>
+                {% for err in form.about_me.errors %}
+                <span style="color:red">{{ err }}</span>
                 {% endfor %}
             </p>
             <p>
-                {{ form.confirm_password.label }}<br>
-                {{ form.confirm_password(size=35) }}<br>
-                {% for err in form.confirm_password.errors %}
+                {{ form.profile_pic.lable }}<br>
+                {{ form.profile_pic }} <br>
+                {% for err in form.profile_pic.errors %}
                 <span style="color:red">{{ err }}</span>
                 {% endfor %}
             </p>

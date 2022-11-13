@@ -2,9 +2,9 @@ from flask import render_template, flash, redirect, url_for, request
 from flask_login import login_user, logout_user, current_user, login_required
 from werkzeug.urls import url_parse
 from . import app, db
-from .forms import LoginForm, RegistrationForm
+from .forms import LoginForm, RegistrationForm, ProfileEditForm
 from .models import User, Post
-
+from .util import save_profile_pic
 
 posts = [
     {
@@ -22,11 +22,36 @@ posts = [
 def index():
 	return render_template('index.html', posts=posts)
 
-@app.route('/profile')
-@login_required
-def profile():
-    return 'profile page'
 
+@app.route('/user/<username>')
+@login_required
+def user(username):
+    user = User.query.filter_by(username=username).first_or_404()
+    profile_pic_uri = url_for('static' ,filename='profile_pics/' + user.profile_pic_file)
+    return render_template('user.html', user=user, posts=posts, profile_pic_uri=profile_pic_uri)
+
+
+@app.route('/profile_edit', methods=['GET', 'POST'])
+@login_required
+def profile_edit():
+    form = ProfileEditForm()
+    if form.validate_on_submit():
+        if form.profile_pic.data:
+            pic_file_name = save_profile_pic(form.profile_pic.data)
+            current_user.profile_pic_file = pic_file_name
+        current_user.username = form.username.data
+        current_user.email = form.email.data
+        current_user.about_me = form.about_me.data
+        db.session.commit()
+        flash('Profile updated')
+        return redirect(url_for('user', username=current_user.username))
+    if request.method == 'GET':
+        form.username.data = current_user.username
+        form.email.data = current_user.email
+        form.about_me.data = current_user.about_me
+    return render_template('profile_edit.html', form=form)
+
+    
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if current_user.is_authenticated:
@@ -48,6 +73,7 @@ def login():
             flash('Invalid username or password')
     return render_template('login.html', form=form)
 
+
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
     if current_user.is_authenticated:
@@ -61,6 +87,7 @@ def signup():
         flash('Congratulations, you are now a registered user!')
         return redirect(url_for('login'))
     return render_template('signup.html', form=form)
+
 
 @app.route('/logout')
 @login_required
