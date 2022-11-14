@@ -1,17 +1,26 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <img src="{{ profile_pic_uri }}">
+  <table>
+  <tr valign="top">
+    <td><img src="{{ profile_pic_uri }}"></td>
+    <td>
     <h1>User: {{ user.username }}</h1>
     {% if user.about_me %}
         <p>{{ user.about_me }}</p>
     {% endif %}
-    {% if user.last_seen %}
+    {% if current_user == user %}
+        <p>Last seen on: Online</p>
+    {% else  %}
         <p>Last seen on: {{ user.last_seen }}</p>
     {% endif %}
     {% if current_user.username == user.username %}
         <p><a href="{{ url_for('profile_edit')}}">Edit Profile</a></p>
     {% endif %}
+    </td>
+  </tr>
+  </table>
+  <hr>
     {% for post in posts %}
         <p>{{ user.username }} says: <b>{{ post.body }}</b></p>
     {% endfor %}

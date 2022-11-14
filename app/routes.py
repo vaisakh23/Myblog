@@ -1,6 +1,7 @@
 from flask import render_template, flash, redirect, url_for, request
 from flask_login import login_user, logout_user, current_user, login_required
 from werkzeug.urls import url_parse
+from datetime import datetime
 from . import app, db
 from .forms import LoginForm, RegistrationForm, ProfileEditForm
 from .models import User, Post
@@ -16,6 +17,14 @@ posts = [
         "body": "rainly day"
     }
     ]
+
+
+@app.before_request
+def before_request():
+    if current_user.is_authenticated:
+        current_user.last_seen = datetime.utcnow()
+        db.session.commit()
+
 
 @app.route('/')
 @login_required
