@@ -1,4 +1,5 @@
-from flask import render_template, flash, redirect, url_for, request
+from flask import (render_template, flash, 
+    redirect, url_for, request, abort)
 from flask_login import login_user, logout_user, current_user, login_required
 from werkzeug.urls import url_parse
 from datetime import datetime
@@ -35,6 +36,8 @@ def index():
 @app.route('/user/<username>')
 @login_required
 def user(username):
+    if not username:
+        abort(404)
     user = User.query.filter_by(username=username).first_or_404()
     profile_pic_uri = url_for('static' ,filename='profile_pics/' + user.profile_pic_file)
     return render_template('user.html', user=user, posts=posts, profile_pic_uri=profile_pic_uri)
