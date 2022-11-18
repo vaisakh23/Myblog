@@ -30,7 +30,7 @@ def before_request():
 @app.route('/')
 @login_required
 def index():
-	return render_template('index.html', posts=posts)
+    return render_template('index.html', posts=posts)
 
 
 @app.route('/user/<username>')
