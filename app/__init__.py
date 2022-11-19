@@ -32,10 +32,18 @@ if not app.debug:
     
     #logging to mail
     mail_handler = SMTPHandler(
-        mailhost=('localhost', '8025'),
-        fromaddr='send@text.com',
-        toaddrs=['rec@text.com'],
-        subject='Microblog Failure'
+        mailhost=(
+            os.environ.get('MAIL_SERVER'), 
+            os.environ.get('MAIL_PORT')
+        ),
+        fromaddr=os.environ.get('MAIL_USERNAME'),
+        toaddrs=os.environ.get('ADMIN'),
+        subject='Microblog Failure',
+        credentials=(
+            os.environ.get('MAIL_USERNAME'),
+            os.environ.get('MAIL_PASSWORD')
+        ),
+        secure=()
         )
     mail_handler.setLevel(logging.ERROR)
     app.logger.addHandler(mail_handler)
