@@ -11,11 +11,23 @@
     {% endif %}
     {% if current_user == user %}
         <p>Last seen on: Online</p>
+        <p><a href="{{ url_for('profile_edit') }}">Edit Profile</a></p>
     {% else  %}
         <p>Last seen on: {{ user.last_seen }}</p>
-    {% endif %}
-    {% if current_user.username == user.username %}
-        <p><a href="{{ url_for('profile_edit')}}">Edit Profile</a></p>
+        <!--follow/unfollow button-->
+        {% if current_user.is_in_followed(user) %}
+            {% set func_name = 'unfollow' %}
+        {% else %}
+            {% set func_name = 'follow' %}
+        {% endif %}
+        <p>
+            <form action="{{ url_for('follow_unfollow', username=user.username) }}" method="POST">
+                {{ form.csrf_token }}
+                {{ form.func_name(value=func_name) }}
+                {{ form.submit(value=func_name | capitalize) }}
+            </form>
+        </p>
+        <!-- -->
     {% endif %}
     </td>
   </tr>

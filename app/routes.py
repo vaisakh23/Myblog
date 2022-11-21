@@ -4,7 +4,7 @@ from flask_login import login_user, logout_user, current_user, login_required
 from werkzeug.urls import url_parse
 from datetime import datetime
 from . import app, db
-from .forms import LoginForm, RegistrationForm, ProfileEditForm
+from .forms import LoginForm, RegistrationForm, ProfileEditForm, FollowForm
 from .models import User, Post
 from .util import save_profile_pic
 
@@ -32,15 +32,14 @@ def before_request():
 def index():
     return render_template('index.html', posts=posts)
 
-
+#profile
 @app.route('/user/<username>')
 @login_required
 def user(username):
-    if not username:
-        abort(404)
+    form = FollowForm()
     user = User.query.filter_by(username=username).first_or_404()
     profile_pic_uri = url_for('static' ,filename='profile_pics/' + user.profile_pic_file)
-    return render_template('user.html', user=user, posts=posts, profile_pic_uri=profile_pic_uri)
+    return render_template('user.html', user=user, posts=posts, profile_pic_uri=profile_pic_uri, form=form)
 
 
 @app.route('/profile_edit', methods=['GET', 'POST'])
@@ -106,3 +105,36 @@ def signup():
 def logout():
     logout_user()
     return redirect(url_for('login'))
+
+
+@app.route('/follow_unfollow/<username>', methods=['POST'])
+@login_required
+def follow_unfollow(username):
+    form = FollowForm()
+    if form.validate_on_submit():
+        user = User.query.filter_by(username=username).first_or_404()
+        if current_user == user:
+            flash("Something fishy")
+            return redirect(url_for('index'))
+        #app.logger.info(form.func_name.data)
+        if form.func_name.data == 'follow':
+            current_user.follow(user)
+            flash('Followed successfully')
+        elif form.func_name.data == 'unfollow':
+            current_user.unfollow(user)
+            flash('Unfollowed successfully')
+        db.session.commit()
+    return redirect(url_for('user', username=username))   
+
+
+@app.route('/unfollow/<username>', methods=['POST'])
+@login_required
+def unfollow(username):
+    form = FollowForm()
+    if form.validate_on_submit():
+        user = User.query.filter_by(username=username).first_or_404()
+        current_user.unfollow(user)
+        db.session.commit()
+        flash('Unfollowed successfully')
+    return redirect(url_for('user', username=username))   
+

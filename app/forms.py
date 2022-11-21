@@ -2,7 +2,7 @@ from flask_wtf import FlaskForm
 from flask_login import current_user
 from flask_wtf.file import FileField, FileAllowed
 from wtforms import (StringField, PasswordField, BooleanField, 
-    SubmitField, EmailField, TextAreaField)
+    SubmitField, EmailField, TextAreaField, HiddenField)
 from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
 from .models import User
 
@@ -50,3 +50,8 @@ class ProfileEditForm(FlaskForm):
             user = User.query.filter_by(email=email.data).first()
             if user:
                 raise ValidationError('Please use a different email address.')
+
+class FollowForm(FlaskForm):
+    func_name = HiddenField('hidden')
+    submit = SubmitField('submit')
+    
