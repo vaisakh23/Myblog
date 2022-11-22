@@ -4,20 +4,10 @@ from flask_login import login_user, logout_user, current_user, login_required
 from werkzeug.urls import url_parse
 from datetime import datetime
 from . import app, db
-from .forms import LoginForm, RegistrationForm, ProfileEditForm, FollowForm
+from .forms import (LoginForm, RegistrationForm, ProfileEditForm, 
+    FollowForm, PostForm)
 from .models import User, Post
 from .util import save_profile_pic
-
-posts = [
-    {
-        "author": {"username": "jhon"},
-        "body": "Beautiful day it is!"
-    },
-    {
-        "author": {"username": "mike"},
-        "body": "rainly day"
-    }
-    ]
 
 
 @app.before_request
@@ -27,10 +17,18 @@ def before_request():
         db.session.commit()
 
 
-@app.route('/')
+@app.route('/', methods=['GET', 'POST'])
 @login_required
 def index():
-    return render_template('index.html', posts=posts)
+    form = PostForm()
+    if form.validate_on_submit():
+        post = Post(body=form.body.data, author=current_user)
+        db.session.add(post)
+        db.session.commit()
+        flash('New post added')
+        return redirect(url_for('index'))
+    posts = current_user.followed_users_posts()
+    return render_template('index.html', posts=posts, form=form)
 
 #profile
 @app.route('/user/<username>')
@@ -38,6 +36,7 @@ def index():
 def user(username):
     form = FollowForm()
     user = User.query.filter_by(username=username).first_or_404()
+    posts = user.posts.order_by(Post.timestamp.desc())
     profile_pic_uri = url_for('static' ,filename='profile_pics/' + user.profile_pic_file)
     return render_template('user.html', user=user, posts=posts, profile_pic_uri=profile_pic_uri, form=form)
 
@@ -127,14 +126,7 @@ def follow_unfollow(username):
     return redirect(url_for('user', username=username))   
 
 
-@app.route('/unfollow/<username>', methods=['POST'])
-@login_required
-def unfollow(username):
-    form = FollowForm()
-    if form.validate_on_submit():
-        user = User.query.filter_by(username=username).first_or_404()
-        current_user.unfollow(user)
-        db.session.commit()
-        flash('Unfollowed successfully')
-    return redirect(url_for('user', username=username))   
-
+@app.route('/explore')
+def explore():
+    posts = Post.query.order_by(Post.timestamp.desc()).all()
+    return render_template('index.html', posts=posts)

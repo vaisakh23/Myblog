@@ -15,5 +15,4 @@ def save_profile_pic(picture):
     img.thumbnail(reduce_size_to)
     img.save(picture_saving_path)
     
-    
     return picture_file_name

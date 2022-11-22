@@ -3,7 +3,7 @@
 {% block content %}
   <table>
   <tr valign="top">
-    <td><img src="{{ profile_pic_uri }}"></td>
+    <td><img src="{{ profile_pic_uri }}" style="width: 100px"></td>
     <td>
     <h1>User: {{ user.username }}</h1>
     {% if user.about_me %}
@@ -34,6 +34,6 @@
   </table>
   <hr>
     {% for post in posts %}
-        <p>{{ user.username }} says: <b>{{ post.body }}</b></p>
+        {% include '_post.html' %}
     {% endfor %}
 {% endblock %}

@@ -51,7 +51,13 @@ class ProfileEditForm(FlaskForm):
             if user:
                 raise ValidationError('Please use a different email address.')
 
+
 class FollowForm(FlaskForm):
     func_name = HiddenField('hidden')
     submit = SubmitField('submit')
+
+
+class PostForm(FlaskForm):
+    body = TextAreaField('Create new post', validators=[DataRequired(), Length(max=140)])
+    submit = SubmitField('Post')
     
