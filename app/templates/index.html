@@ -2,7 +2,6 @@
 
 {% block content %}
     <h1>Hi, {{ current_user.username }}!</h1>
-    {% if form %}
     <form action="" method="POST">
         <p>
         {{ form.hidden_tag() }}
@@ -14,8 +13,11 @@
         </p>
         <p>{{ form.submit() }}</p>
     </form>
-    {% endif %}
-    {% for post in posts %}
+    {% for post in posts.items %}
         {% include '_post.html' %}
     {% endfor %}
+    <!-- pagination -->
+    {% set prev_url = url_for('index', page=posts.prev_num) %}
+    {% set next_url = url_for('index', page=posts.next_num) %}
+    {% include '_pagination.html' %}
 {% endblock %}

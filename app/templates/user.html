@@ -33,7 +33,11 @@
   </tr>
   </table>
   <hr>
-    {% for post in posts %}
+    {% for post in posts.items %}
         {% include '_post.html' %}
     {% endfor %}
+    <!-- pagination -->
+    {% set prev_url = url_for('user', username=user.username, page=posts.prev_num) %}
+    {% set next_url = url_for('user', username=user.username, page=posts.next_num) %}
+    {% include '_pagination.html' %}
 {% endblock %}

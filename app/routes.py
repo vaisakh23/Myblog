@@ -27,7 +27,9 @@ def index():
         db.session.commit()
         flash('New post added')
         return redirect(url_for('index'))
-    posts = current_user.followed_users_posts()
+    page = request.args.get('page', 1, type=int)
+    posts = current_user.followed_users_posts().paginate(
+        page=page, per_page=app.config['POSTS_PER_PAGE'], error_out=False)
     return render_template('index.html', posts=posts, form=form)
 
 #profile
@@ -36,7 +38,9 @@ def index():
 def user(username):
     form = FollowForm()
     user = User.query.filter_by(username=username).first_or_404()
-    posts = user.posts.order_by(Post.timestamp.desc())
+    page = request.args.get('page', 1, type=int)
+    posts = user.posts.order_by(Post.timestamp.desc()).paginate(
+            page=page, per_page=app.config['POSTS_PER_PAGE'], error_out=False)
     profile_pic_uri = url_for('static' ,filename='profile_pics/' + user.profile_pic_file)
     return render_template('user.html', user=user, posts=posts, profile_pic_uri=profile_pic_uri, form=form)
 
@@ -128,5 +132,7 @@ def follow_unfollow(username):
 
 @app.route('/explore')
 def explore():
-    posts = Post.query.order_by(Post.timestamp.desc()).all()
-    return render_template('index.html', posts=posts)
+    page = request.args.get('page', 1, type=int)
+    posts = Post.query.order_by(Post.timestamp.desc()).paginate(
+            page=page, per_page=app.config['POSTS_PER_PAGE'], error_out=False)
+    return render_template('explore.html', posts=posts)
