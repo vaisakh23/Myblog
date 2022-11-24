@@ -4,6 +4,7 @@ from config import Config
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_login import LoginManager
+from flask_mail import Mail
 import logging
 from logging.handlers import RotatingFileHandler, SMTPHandler
 
@@ -14,11 +15,12 @@ db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 login_manager = LoginManager(app)
 login_manager.login_view = 'login'
+mail = Mail(app)
 
 if not app.debug:
     #logging to file
     file_handler = RotatingFileHandler(
-        'microblog.log', maxBytes=10240,
+        'myblog.log', maxBytes=10240,
         backupCount=10
         )
     file_handler.setFormatter(logging.Formatter(
@@ -38,7 +40,7 @@ if not app.debug:
         ),
         fromaddr=app.config['MAIL_USERNAME'],
         toaddrs=app.config['ADMINS'],
-        subject='Microblog Failure',
+        subject='Myblog Failure',
         credentials=(
             app.config['MAIL_USERNAME'],
             app.config['MAIL_PASSWORD']

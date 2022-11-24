@@ -5,9 +5,10 @@ from werkzeug.urls import url_parse
 from datetime import datetime
 from . import app, db
 from .forms import (LoginForm, RegistrationForm, ProfileEditForm, 
-    FollowForm, PostForm)
+    FollowForm, PostForm, ResetPasswordRequestForm,
+    ResetPasswordForm)
 from .models import User, Post
-from .util import save_profile_pic
+from .util import save_profile_pic, send_password_reset_email
 
 
 @app.before_request
@@ -131,8 +132,42 @@ def follow_unfollow(username):
 
 
 @app.route('/explore')
+@login_required
 def explore():
     page = request.args.get('page', 1, type=int)
     posts = Post.query.order_by(Post.timestamp.desc()).paginate(
             page=page, per_page=app.config['POSTS_PER_PAGE'], error_out=False)
     return render_template('explore.html', posts=posts)
+
+
+@app.route('/reset_password_request', methods=['GET', 'POST'])
+def reset_password_request():
+    if current_user.is_authenticated:
+        return redirect(url_for('index'))
+    form = ResetPasswordRequestForm()
+    if form.validate_on_submit():
+        user = User.query.filter_by(email=form.email.data).first()
+        if user:
+            send_password_reset_email(user)
+        flash('Check your email for the instructions to reset your password')
+        return redirect(url_for('login')) 
+    return render_template('reset_password_request.html', form=form, title='Reset password')
+
+
+@app.route('/reset_password/<token>', methods=['GET', 'POST'])
+def reset_password(token):
+    if current_user.is_authenticated:
+        return redirect(url_for('index'))
+    user = User.verify_reset_password_token(token)
+    if not user:
+        flash('Invalid or expired link')
+        return redirect(url_for('login'))
+    form = ResetPasswordForm()
+    if form.validate_on_submit():
+        user.set_password(form.password.data)
+        db.session.commit()
+        flash('Your password has been reset.')
+        return redirect(url_for('login'))
+    return render_template('reset_password.html', form=form, title='Reset password')
+        
+
