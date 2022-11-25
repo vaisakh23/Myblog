@@ -80,12 +80,18 @@ class User(UserMixin, db.Model):
         return followed.union(own).order_by(Post.timestamp.desc())
     
     def get_reset_password_token(self, expires_in=600):
+        '''
+        return JWT token as a string
+        '''
         return jwt.encode(
             {'user_id': self.id, 'exp': time() + expires_in},
             app.config['SECRET_KEY'], algorithm='HS256')
         
     @staticmethod
     def verify_reset_password_token(token):
+        '''
+        return User object if valid token else None
+        '''
         try:
             user_id = jwt.decode(
                 token, app.config['SECRET_KEY'], algorithms=['HS256'])['user_id']

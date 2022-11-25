@@ -2,7 +2,7 @@ import os
 # temp db for test
 os.environ['DATABASE_URI'] = 'sqlite://'
 import unittest
-from microblog import app, db, User, Post
+from myblog import app, db, User, Post
 
 
 class TestUserModel(unittest.TestCase):

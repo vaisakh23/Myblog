@@ -4,6 +4,7 @@ from PIL import Image
 from . import app, mail
 from flask import render_template
 from flask_mail import Message
+from threading import Thread
 
 
 def save_profile_pic(picture):
@@ -27,10 +28,17 @@ def save_profile_pic(picture):
     return picture_file_name
 
 
+def send_mail_thread(msg):
+    '''
+    baground thread sending mail
+    '''
+    with app.app_context():
+        mail.send(msg)
+
 def send_password_reset_email(user):
     '''
     type user : User model object
-    send user the password reset mail
+    send user password reset instructions
     '''
     token = user.get_reset_password_token()
     msg = Message('Reset Your Password', 
@@ -40,5 +48,6 @@ def send_password_reset_email(user):
         'email/reset_password.txt', user=user, token=token)
     msg.html = render_template(
         'email/reset_password.html', user=user, token=token)
-    mail.send(msg)
+    #new thread 
+    Thread(target=send_mail_thread, args=(msg,)).start()
 
