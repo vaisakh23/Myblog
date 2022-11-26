@@ -11,9 +11,9 @@
     {% endif %}
     {% if current_user == user %}
         <p>Last seen on: Online</p>
-        <p><a href="{{ url_for('profile_edit') }}">Edit Profile</a></p>
+        <p><a href="{{ url_for('main.profile_edit') }}">Edit Profile</a></p>
     {% else  %}
-        <p>Last seen on: {{ user.last_seen }}</p>
+        <p>Last seen on: {{ moment(user.last_seen).fromNow() }}</p>
         <!--follow/unfollow button-->
         {% if current_user.is_in_followed(user) %}
             {% set func_name = 'unfollow' %}
@@ -21,7 +21,7 @@
             {% set func_name = 'follow' %}
         {% endif %}
         <p>
-            <form action="{{ url_for('follow_unfollow', username=user.username) }}" method="POST">
+            <form action="{{ url_for('main.follow_unfollow', username=user.username) }}" method="POST">
                 {{ form.csrf_token }}
                 {{ form.func_name(value=func_name) }}
                 {{ form.submit(value=func_name | capitalize) }}
@@ -37,7 +37,7 @@
         {% include '_post.html' %}
     {% endfor %}
     <!-- pagination -->
-    {% set prev_url = url_for('user', username=user.username, page=posts.prev_num) %}
-    {% set next_url = url_for('user', username=user.username, page=posts.next_num) %}
+    {% set prev_url = url_for('main.user', username=user.username, page=posts.prev_num) %}
+    {% set next_url = url_for('main.user', username=user.username, page=posts.next_num) %}
     {% include '_pagination.html' %}
 {% endblock %}

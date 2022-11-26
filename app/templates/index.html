@@ -17,7 +17,7 @@
         {% include '_post.html' %}
     {% endfor %}
     <!-- pagination -->
-    {% set prev_url = url_for('index', page=posts.prev_num) %}
-    {% set next_url = url_for('index', page=posts.next_num) %}
+    {% set prev_url = url_for('main.index', page=posts.prev_num) %}
+    {% set next_url = url_for('main.index', page=posts.next_num) %}
     {% include '_pagination.html' %}
 {% endblock %}

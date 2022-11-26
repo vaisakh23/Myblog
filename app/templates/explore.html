@@ -6,7 +6,7 @@
         {% include '_post.html' %}
     {% endfor %}
     <!-- pagination -->
-    {% set prev_url = url_for('explore', page=posts.prev_num) %}
-    {% set next_url = url_for('explore', page=posts.next_num) %}
+    {% set prev_url = url_for('main.explore', page=posts.prev_num) %}
+    {% set next_url = url_for('main.explore', page=posts.next_num) %}
     {% include '_pagination.html' %}
 {% endblock %}
