@@ -2,41 +2,62 @@
 
 {% block content %}
     <div>
-        <p>Sign Up</p>
+        <h3 class="mb-5">Sign Up</h3>
         <form action="{{ url_for('auth.signup') }}" method='POST' novalidate>
             {{ form.hidden_tag() }}
-            <p>
-                {{ form.username.label }}<br>
-                {{ form.username(size=35) }}<br>
-                {% for err in form.username.errors %}
-                    <span style="color:red">{{ err }}</span>
-                {% endfor %}
-            </p>
-            <p>
-                {{ form.email.label }}<br>
-                {{ form.email(size=35) }}<br>
+            
+            {{ form.username.label(class="form-label",for="username") }}
+            {% if form.username.errors %}
+            {{ form.username(class='form-control form-control-lg is-invalid', id='username') }}
+            {% for err in form.username.errors %}
+                <div class="invalid-feedback mb-4">
+                    {{ err }}
+                </div>
+            {% endfor %}
+            {% else %}
+            {{ form.username(class='form-control form-control-lg mb-4', id='username') }}
+            {% endif %}
+            
+            {{ form.email.label(class="form-label",for="email") }}
+            {% if form.email.errors %}
+                {{ form.email(class='form-control form-control-lg is-invalid', id='email') }}
                 {% for err in form.email.errors %}
-                <span style="color:red">{{ err }}</span>
+                <div class="invalid-feedback mb-4">
+                    {{ err }}
+                </div>
                 {% endfor %}
-            </p>
-            <p>
-                {{ form.password.label }}<br>
-                {{ form.password(size=35) }}<br>
-                {% for err in form.password.errors %}
-                    <span style="color:red">{{ err }}</span>
-                {% endfor %}
-            </p>
-            <p>
-                {{ form.confirm_password.label }}<br>
-                {{ form.confirm_password(size=35) }}<br>
-                {% for err in form.confirm_password.errors %}
-                <span style="color:red">{{ err }}</span>
-                {% endfor %}
-            </p>
-            <p>
-            {{ form.submit }}
-            </p>
+            {% else %}
+                {{ form.email(class='form-control form-control-lg mb-4', id='email') }}
+            {% endif %}
+            
+            {{ form.password.label(class="form-label",for="password") }}
+            {% if form.password.errors %}
+            {{ form.password(class='form-control form-control-lg is-invalid', id='password') }}
+            {% for err in form.password.errors %}
+            <div class="invalid-feedback mb-4">
+                {{ err }}
+            </div>
+            {% endfor %}
+            {% else %}
+            {{ form.password(class='form-control form-control-lg mb-4', id='password') }}
+            {% endif %}
+            
+            {{ form.confirm_password.label(class="form-label",for="confirm_password") }}
+            {% if form.confirm_password.errors %}
+            {{ form.confirm_password(class='form-control form-control-lg is-invalid', id='confirm_password') }}
+            {% for err in form.confirm_password.errors %}
+            <div class="invalid-feedback mb-4">
+                {{ err }}
+            </div>
+            {% endfor %}
+            {% else %}
+            {{ form.confirm_password(class='form-control form-control-lg mb-4', id='confirm_password') }}
+            {% endif %}
+            
+            <br>
+            {{ form.submit(class="btn btn-lg btn-primary mb-4") }}
         </form>
+        <a class="mb-3" href="{{ url_for('auth.login') }}">Have an account</a>
     </div>
 {% endblock %}
 

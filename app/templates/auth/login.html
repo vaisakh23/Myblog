@@ -2,33 +2,41 @@
 
 {% block content %}
     <div>
-        <p>Sign In</p>
+        <h3 class="mb-5">Sign In</h3>
         <form action="" method='POST' novalidate>
             {{ form.hidden_tag() }}
-            <p>
-                {{ form.username.label }}<br>
-                {{ form.username(size=35) }}<br>
+            {{ form.username.label(class="form-label",for="username") }}
+            {% if form.username.errors %}
+                {{ form.username(class='form-control form-control-lg is-invalid', id='username') }}
                 {% for err in form.username.errors %}
-                    <span style="color:red">{{ err }}</span>
+                    <div class="invalid-feedback mb-4">
+                    {{ err }}
+                    </div>
                 {% endfor %}
-            </p>
-            <p>
-                {{ form.password.label }}<br>
-                {{ form.password(size=35) }}<br>
+            {% else %}
+                {{ form.username(class='form-control form-control-lg mb-4', id='username') }}
+            {% endif %}
+            
+            {{ form.password.label(class="form-label",for="password") }}
+            {% if form.password.errors %}
+                {{ form.password(class='form-control form-control-lg is-invalid', id='password') }}
                 {% for err in form.password.errors %}
-                    <span style="color:red">{{ err }}</span>
+                    <div class="invalid-feedback mb-4">
+                    {{ err }}
+                    </div>
                 {% endfor %}
-            </p>
-            <p>
-                {{ form.remember_me }}
-                {{ form.remember_me.label }}
-            </p>
-            <p>
-            {{ form.submit }}
-            <a href="{{ url_for('auth.reset_password_request') }}">Forgot password?</a>
-            </p>
+            {% else %}
+                {{ form.password(class='form-control form-control-lg mb-4', id='password') }}
+            {% endif %}
+            
+            {{ form.remember_me(class='form-check-input',id='rm' ) }}
+            {{ form.remember_me.label(class='form-check-label mb-4', for='rm') }}
+            <br>
+            {{ form.submit(class="btn btn-lg btn-primary mb-4") }}
         </form>
-        <p>New User? <a href="{{ url_for('auth.signup') }}">Click to Register!</a>
+        <a class="mb-3" href="{{ url_for('auth.reset_password_request') }}">Forgot password?</a>
+        <p>New User? 
+            <a href="{{ url_for('auth.signup') }}">Click to Register!</a>
         </p>
     </div>
 {% endblock %}

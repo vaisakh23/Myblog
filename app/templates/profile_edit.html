@@ -2,40 +2,59 @@
 
 {% block content %}
     <div>
-        <p>Edit Profile</p>
+        <h3 class="mb-5">Edit Profile</h3>
         <form action="" method='POST' enctype="multipart/form-data", novalidate>
             {{ form.hidden_tag() }}
-            <p>
-                {{ form.username.label }}<br>
-                {{ form.username(size=35) }}<br>
-                {% for err in form.username.errors %}
-                <span style="color:red">{{ err }}</span>
-                {% endfor %}
-            </p>
-            <p>
-                {{ form.email.label }}<br>
-                {{ form.email(size=35) }}<br>
-                {% for err in form.email.errors %}
-                <span style="color:red">{{ err }}</span>
-                {% endfor %}
-            </p>
-            <p>
-                {{ form.about_me.label }}<br>
-                {{ form.about_me(cols=50, rows=4) }}<br>
-                {% for err in form.about_me.errors %}
-                <span style="color:red">{{ err }}</span>
-                {% endfor %}
-            </p>
-            <p>
-                {{ form.profile_pic.lable }}<br>
-                {{ form.profile_pic }} <br>
-                {% for err in form.profile_pic.errors %}
-                <span style="color:red">{{ err }}</span>
-                {% endfor %}
-            </p>
-            <p>
-            {{ form.submit }}
-            </p>
+            {{ form.username.label(class="form-label",for="username") }}
+            {% if form.username.errors %}
+            {{ form.username(class='form-control form-control-lg is-invalid', id='username') }}
+            {% for err in form.username.errors %}
+            <div class="invalid-feedback mb-4">
+                {{ err }}
+            </div>
+            {% endfor %}
+            {% else %}
+            {{ form.username(class='form-control form-control-lg mb-4', id='username') }}
+            {% endif %}
+            
+            {{ form.email.label(class="form-label",for="email") }}
+            {% if form.email.errors %}
+            {{ form.email(class='form-control form-control-lg is-invalid', id='email') }}
+            {% for err in form.email.errors %}
+            <div class="invalid-feedback mb-4">
+                {{ err }}
+            </div>
+            {% endfor %}
+            {% else %}
+            {{ form.email(class='form-control form-control-lg mb-4', id='email') }}
+            {% endif %}
+            
+            {{ form.about_me.label(class="form-label",for="about_me") }}
+            {% if form.about_me.errors %}
+            {{ form.about_me(class='form-control form-control-lg is-invalid', id='about_me') }}
+            {% for err in form.about_me.errors %}
+            <div class="invalid-feedback mb-4">
+                {{ err }}
+            </div>
+            {% endfor %}
+            {% else %}
+            {{ form.about_me(class='form-control form-control-lg mb-4', id='about_me') }}
+            {% endif %}
+            
+            {{ form.profile_pic.label(class="form-label",for="profile_pic") }}
+            {% if form.profile_pic.errors %}
+            {{ form.profile_pic(class='form-control form-control-lg is-invalid', id='profile_pic') }}
+            {% for err in form.profile_pic.errors %}
+            <div class="invalid-feedback mb-4">
+                {{ err }}
+            </div>
+            {% endfor %}
+            {% else %}
+            {{ form.profile_pic(class='form-control form-control-lg mb-4', id='profile_pic') }}
+            {% endif %}
+            
+            <br>
+            {{ form.submit(class="btn btn-lg btn-primary mb-5") }}
         </form>
     </div>
 {% endblock %}

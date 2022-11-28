@@ -1,17 +1,26 @@
 import os
-# temp db for test
-os.environ['DATABASE_URI'] = 'sqlite://'
 import unittest
-from myblog import app, db, User, Post
+from app import create_app, db
+from app.models import User, Post
+from config import Config
+
+
+class TestConfig(Config):
+    TESTING = True
+    SQLALCHEMY_DATABASE_URI = 'sqlite://'
 
 
 class TestUserModel(unittest.TestCase):
     def setUp(self):
+        self.app = create_app(TestConfig)
+        self.app_context = self.app.app_context()
+        self.app_context.push()
         db.create_all()
     
     def tearDown(self):
         db.session.remove()
         db.drop_all()
+        self.app_context.pop()
     
     def test_check_password(self):
         u = User(username='john', email='john@example.com')

@@ -1,11 +1,13 @@
-{% if posts.has_prev %}
-    <a href={{ prev_url }}>&lt;&lt; Prev</a>
-{% else %}
-    &lt;&lt; Prev
-{% endif %}
-{% if posts.has_next %}
-    <a href={{ next_url }}>Next &gt;&gt;</a>
-{% else %}
-    Next &gt;&gt;
-{% endif %}
+<ul class="pagination">
+    {% if posts.has_prev %}
+    <li class="page-item"><a class="page-link" href={{ prev_url }}>&lt;&lt;Previous</a></li>
+    {% else %}
+    <li class="page-item disabled"><a class="page-link" href="#">&lt;&lt;Previous</a></li>
+    {% endif %}
+    {% if posts.has_next %}
+    <li class="page-item"><a class="page-link" href={{ next_url }}>Next&gt;&gt;</a></li>
+    {% else %}
+    <li class="page-item disabled"><a class="page-link" href="#">Next&gt;&gt;</a></li>
+    {% endif %}
+</ul>
 

@@ -1,17 +1,17 @@
-<table>
-    <tr>
-        <td><img 
-            src="{{ url_for('static' ,filename='profile_pics/' + post.author.profile_pic_file) }}" 
-            style="width: 50px"
-            >
-        </td>
-        <td>
-            <a href="{{ url_for('main.user', username=post.author.username) }}">
+<div class="card mb-4">
+    <div class="card-body">
+        <div class="d-flex flex-row align-items-center mb-3">
+            <img class="post-profile-pic rounded-circle" src="{{ url_for('static' ,filename='profile_pics/' + post.author.profile_pic_file) }}">
+            <div class="ms-3">
+            <a class="post-name" href="{{ url_for('main.user', username=post.author.username) }}">
                 {{ post.author.username }}
-            </a> 
-            said {{ moment(post.timestamp).fromNow() }}:
+            </a>
             <br>
+            <small class="text-muted">{{ moment(post.timestamp).fromNow() }}</small>
+            </div>
+        </div>
+        <p>
             {{ post.body }}
-        </td>
-    </tr>
-</table>
+        </p>
+    </div>
+</div>

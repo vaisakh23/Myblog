@@ -1,17 +1,21 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <h1>Hi, {{ current_user.username }}!</h1>
     <form action="" method="POST">
-        <p>
         {{ form.hidden_tag() }}
-        {{ form.body.label }}<br>
-        {{ form.body(cols=32, row=4) }}<br>
-        {% for error in form.body.errors %}
-        <span style="color: red;">{{ error }}</span>
+        {% if form.body.errors %}
+        {{ form.body(class='form-control form-control-lg is-invalid', id='body') }}
+        {% for err in form.body.errors %}
+        <div class="invalid-feedback">
+            {{ err }}
+        </div>
         {% endfor %}
-        </p>
-        <p>{{ form.submit() }}</p>
+        {% else %}
+        {{ form.body(class='form-control form-control-lg', placeholder='New post', id='body') }}
+        {% endif %}
+        
+        <br>
+        {{ form.submit(class="btn btn-lg btn-primary mb-5") }}
     </form>
     {% for post in posts.items %}
         {% include '_post.html' %}

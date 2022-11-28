@@ -1,38 +1,51 @@
 {% extends 'base.html' %}
 
 {% block content %}
-  <table>
-  <tr valign="top">
-    <td><img src="{{ profile_pic_uri }}" style="width: 100px"></td>
-    <td>
-    <h1>User: {{ user.username }}</h1>
-    {% if user.about_me %}
-        <p>{{ user.about_me }}</p>
-    {% endif %}
+    <div class="d-flex flex-row mb-4">
+    <div>
+        <img class="profile-pic rounded mt-2" src="{{ profile_pic_uri }}">
+    </div>
+    <div class="ms-4">
+        <h1 class="mb-0">{{ user.username }}</h1>
+        {% if user.about_me %}
+        <span>{{ user.about_me }}</span>
+        {% endif %}
+        <div class="d-flex rounded-3 p-2 mb-2 mt-2" style="background-color: #efefef;">
+            <div>Followers
+                <br>
+                <span class="ms-4">{{ user.followers.count() }}</span>
+            </div>
+            <div class="ms-4">Followed
+                <br>
+                <span class="ms-4">{{ user.followed.count() }}</span>
+            </div>
+        </div>
+    </div>
+    <div class="d-flex flex-fill justify-content-end flex-row">
+        <span>{{ moment(user.last_seen).fromNow() }}</span>
+    </div>
+    </div>
+    
+    <div class="d-flex flex-row justify-content-center">
     {% if current_user == user %}
-        <p>Last seen on: Online</p>
-        <p><a href="{{ url_for('main.profile_edit') }}">Edit Profile</a></p>
+        <a class="btn btn-primary" href="{{ url_for('main.profile_edit') }}">Edit Profile</a></p>
     {% else  %}
-        <p>Last seen on: {{ moment(user.last_seen).fromNow() }}</p>
         <!--follow/unfollow button-->
         {% if current_user.is_in_followed(user) %}
             {% set func_name = 'unfollow' %}
         {% else %}
             {% set func_name = 'follow' %}
         {% endif %}
-        <p>
             <form action="{{ url_for('main.follow_unfollow', username=user.username) }}" method="POST">
                 {{ form.csrf_token }}
                 {{ form.func_name(value=func_name) }}
-                {{ form.submit(value=func_name | capitalize) }}
+                {{ form.submit(class='btn btn-primary',  value=func_name | capitalize) }}
             </form>
         </p>
         <!-- -->
     {% endif %}
-    </td>
-  </tr>
-  </table>
-  <hr>
+    </div>
+    <hr>
     {% for post in posts.items %}
         {% include '_post.html' %}
     {% endfor %}

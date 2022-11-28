@@ -35,7 +35,7 @@ def create_app(config_class=Config):
     from .main import bp as main_bp
     app.register_blueprint(main_bp)
     
-    if not app.debug:
+    if not app.debug and not app.testing:
         #logging to file
         file_handler = RotatingFileHandler(
             'myblog.log', maxBytes=10240,
@@ -72,4 +72,3 @@ def create_app(config_class=Config):
     return app
     
     
-from . import models
