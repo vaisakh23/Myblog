@@ -24,7 +24,7 @@ Install dependencies
     pip install -r requirements.txt
 ```
 
-Export environment
+Export environment.(created .env instead)
 
 ```bash
     export DATABASE_URI = "<your-database-url>"
