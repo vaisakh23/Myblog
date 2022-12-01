@@ -35,6 +35,9 @@ def create_app(config_class=Config):
     from .main import bp as main_bp
     app.register_blueprint(main_bp)
     
+    from .post import bp as post_bp
+    app.register_blueprint(post_bp)
+    
     if not app.debug and not app.testing:
         #logging to file
         file_handler = RotatingFileHandler(

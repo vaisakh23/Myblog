@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <p>Search result for '{{ text }}'</p>
+    {% if users %}
+    <div class="card mb-4">
+        <div class="card-body">
+            {% for user in users %}
+                <div class="d-flex flex-row align-items-center mb-3">
+                    <img class="post-profile-pic rounded-circle" src="{{ url_for('static' ,filename='profile_pics/' + user.profile_pic_file) }}">
+                    <div class="ms-3">
+                        <a class="post-name" href="{{ url_for('main.user', username=user.username) }}">
+                            {{ user.username }}
+                        </a>
+                        <br>
+                        <small class="text-muted">{{ moment(user.last_seen).fromNow() }}
+                        </small>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% else %}
+        <p>Nothing found</p>
+    {% endif %}
+{% endblock %}

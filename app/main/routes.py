@@ -95,3 +95,13 @@ def explore():
             page=page, per_page=current_app.config['POSTS_PER_PAGE'], error_out=False)
     return render_template('explore.html', posts=posts)
 
+
+@bp.route('/search-users')
+@login_required
+def search_users():
+    text = request.args.get('text')
+    if text:
+        search = f'{text}%'
+        users = User.query.filter(User.username.like(search)).all()
+    return render_template('search_users.html', users = users, text=text)
+    

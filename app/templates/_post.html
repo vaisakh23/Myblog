@@ -9,6 +9,13 @@
             <br>
             <small class="text-muted">{{ moment(post.timestamp).fromNow() }}</small>
             </div>
+            {% if post.author == current_user %}
+            <div class="d-flex flex-fill justify-content-end">
+                <a href="{{ url_for('post.delete_post', post_id=post.id) }}">
+                    <i class="fas fa-trash-alt"></i>
+                </a>
+            </div>
+            {% endif %}
         </div>
         <p>
             {{ post.body }}
