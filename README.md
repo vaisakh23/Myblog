@@ -48,3 +48,13 @@ Run the Server
 ```bash
     flask run
 ```
+
+To setup a SMTP debugging server
+open a second terminal session and run the following command
+```
+    python -m smtpd -n -c DebuggingServer localhost:8025
+```
+```
+    export MAIL_SERVER = localhost
+    export MAIL_PORT = 8025
+```
