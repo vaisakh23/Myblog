@@ -70,7 +70,7 @@ def create_app(config_class=Config):
             )
         mail_handler.setLevel(logging.ERROR)
         app.logger.addHandler(mail_handler)
-        app.logger.error("testing logging")
+        #app.logger.error("testing logging")
     
     return app
     
