@@ -1,6 +1,9 @@
 # Myblog
 Minimal social website made with flask 
 
+demo
+https://web-production-b7a6.up.railway.app/login
+
 ## Run Locally
 
 Clone the project
