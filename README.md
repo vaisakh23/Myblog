@@ -51,10 +51,10 @@ Run the Server
 
 To setup a SMTP debugging server
 open a second terminal session and run the following command
-```
+```bash
     python -m smtpd -n -c DebuggingServer localhost:8025
 ```
-```
+```bash
     export MAIL_SERVER = localhost
     export MAIL_PORT = 8025
 ```
