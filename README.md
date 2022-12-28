@@ -2,7 +2,7 @@
 Minimal social website made with flask 
 
 demo
-https://web-production-b7a6.up.railway.app/login
+https://myblog-fym4.onrender.com
 
 ## Run Locally
 
