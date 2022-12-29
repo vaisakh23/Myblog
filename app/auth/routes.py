@@ -10,6 +10,13 @@ from .forms import (LoginForm, RegistrationForm,ResetPasswordRequestForm,
 from .util import send_password_reset_email
 
 
+@bp.route('/demo-login')
+def demo_login():
+    user = User.query.filter_by(username='vaisakh').first()
+    login_user(user)
+    return redirect(url_for('main.index'))
+
+
 @bp.route('/login', methods=['GET', 'POST'])
 def login():
     if current_user.is_authenticated:
