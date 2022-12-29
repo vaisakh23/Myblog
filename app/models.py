@@ -34,7 +34,7 @@ class User(UserMixin, db.Model):
         lazy='dynamic'
     )
     profile_pic_file = db.Column(db.String(20), nullable=False, default='default.jpg')
-    about_me = db.Column(db.String(140))
+    about_me = db.Column(db.String(500))
     last_seen = db.Column(db.DateTime, default=datetime.utcnow)
     #many-many relation, self referential
     followed = db.relationship(

@@ -32,7 +32,7 @@ class FollowForm(FlaskForm):
 
 
 class PostForm(FlaskForm):
-    body = TextAreaField('Create new post', validators=[DataRequired(), Length(max=140)])
+    body = TextAreaField('Create new post', validators=[DataRequired(), Length(max=500)])
     submit = SubmitField('Post')
 
 
