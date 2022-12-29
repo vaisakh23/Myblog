@@ -43,6 +43,7 @@ Setup Database
 
 ```bash
     flask db init
+    flask db stamp head
     flask db migrate -m "<optional-message>"
     flask db upgrade
   
